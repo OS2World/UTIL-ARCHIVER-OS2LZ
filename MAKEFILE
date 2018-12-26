@@ -1,0 +1,50 @@
+# Makefile for LZH Compression routines
+#
+LIBC6=\C600\LIB^\
+cf=-c -MD -Gs -Oxwz -Zlpi -W4
+# Use linker from C5.1 if debugging with Multiscope & Do NOT cvpack
+#CLINK=\C51\BIN^\
+
+.c.obj:
+    $(CC) $(cf) $*.c
+
+ALL: lzss.exe lzhuf.exe lzari.exe
+
+lzss.exe:	lzss.obj \
+		$(LIBC6)crtlib.dll \
+		$(LIBC6)os2.lib \
+        	lzss.def
+	link @<<
+$(LIBC6)crtexe+lzss,lzss,,os2+crtlib,lzss/align:16/noe/noi/nod/f/packc/ba/co;
+<<NOKEEP
+!IFNDEF CLINK
+        cvpack /p lzss.exe
+!ENDIF
+
+lzhuf.exe:	lzhuf.obj \
+		$(LIBC6)crtlib.dll \
+		$(LIBC6)os2.lib \
+        	lzhuf.def
+	link @<<
+$(LIBC6)crtexe+lzhuf,lzhuf,,os2+crtlib,lzhuf/align:16/noe/noi/nod/f/packc/ba/co;
+<<NOKEEP
+!IFNDEF CLINK
+        cvpack /p lzhuf.exe
+!ENDIF
+
+lzari.exe:	lzari.obj \
+		$(LIBC6)crtlib.dll \
+		$(LIBC6)os2.lib \
+        	lzari.def
+	link @<<
+$(LIBC6)crtexe+lzari,lzari,,os2+crtlib,lzari/align:16/noe/noi/nod/f/packc/ba/co;
+<<NOKEEP
+!IFNDEF CLINK
+        cvpack /p lzari.exe
+!ENDIF
+
+lzss.obj:   lzss.c
+
+lzhuf.obj:   lzhuf.c
+
+lzari.obj:   lzari.c
